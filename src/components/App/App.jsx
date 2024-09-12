@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react'; 
 import { store, persistor } from '../../redux/store';
@@ -10,12 +10,14 @@ import ContactList from '../ContactList/ContactList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBook } from '@fortawesome/free-solid-svg-icons';
 import initialContacts from '../../contacts.json';
+import Loader from '../Loader/Loader'; 
 import css from './App.module.css';
 
 const App = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
   const filter = useSelector(selectNameFilter);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const savedContacts = localStorage.getItem('contacts');
@@ -23,6 +25,7 @@ const App = () => {
       localStorage.setItem('contacts', JSON.stringify(initialContacts));
       initialContacts.forEach(contact => dispatch(addContact(contact)));
     }
+    setLoading(false);
   }, [dispatch]);
 
   useEffect(() => {
@@ -56,17 +59,23 @@ const App = () => {
 
   return (
     <PersistGate loading={null} persistor={persistor}>
-      <h1 className={css.title}>
-        <FontAwesomeIcon icon={faBook} className={css.iconBook} />
-        Phonebook
-      </h1>
-      <div className={css.container}>
-        <div className={css.wrapper}>
-          <ContactForm onAdd={handleAddContact} />
-          <SearchBox value={filter} onSearch={handleChangeFilter} />
-        </div>
-        <ContactList contacts={visibleContacts} onDelete={handleDeleteContact} />
-      </div>
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <h1 className={css.title}>
+            <FontAwesomeIcon icon={faBook} className={css.iconBook} />
+            Phonebook
+          </h1>
+          <div className={css.container}>
+            <div className={css.wrapper}>
+              <ContactForm onAdd={handleAddContact} />
+              <SearchBox value={filter} onSearch={handleChangeFilter} />
+            </div>
+            <ContactList contacts={visibleContacts} onDelete={handleDeleteContact} />
+          </div>
+        </>
+       )}
     </PersistGate>
   );
 };
