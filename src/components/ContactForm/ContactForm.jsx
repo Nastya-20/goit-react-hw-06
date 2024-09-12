@@ -2,6 +2,8 @@ import React from 'react';
 import { Field, Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { nanoid } from 'nanoid';
+import { useDispatch } from 'react-redux';
+import { addContact } from '../../redux/contactsSlice';
 import css from './ContactForm.module.css';
 
 const ContactSchema = Yup.object().shape({
@@ -14,14 +16,16 @@ const ContactSchema = Yup.object().shape({
     .required('This field is required!'),
 });
 
-export default function ContactForm({ onAdd }) {
+export default function ContactForm() {
+  const dispatch = useDispatch();
+
   const handleSubmit = (values, actions) => {
     const newContact = {
       id: nanoid(),
       name: values.userName,
       number: values.userPhone,
     };
-    onAdd(newContact);
+    dispatch(addContact(newContact));
     actions.resetForm();
   };
 
@@ -37,12 +41,12 @@ export default function ContactForm({ onAdd }) {
       <Form className={css.form}>
         <div className={css.formGroup}>
           <label className={css.label} htmlFor="userName">Name</label>
-          <Field className={css.name} type="text" name="userName" id="userName" placeholder="Enter name..."/>
+          <Field className={css.name} type="text" name="userName" id="userName" placeholder="Enter name..." />
           <ErrorMessage name="userName" component="span" className={css.error} />
         </div>
         <div className={css.formGroup}>
           <label className={css.label} htmlFor="userPhone">Number</label>
-          <Field className={css.phone} type="text" name="userPhone" id="userPhone" placeholder="Enter number..."/>
+          <Field className={css.phone} type="text" name="userPhone" id="userPhone" placeholder="Enter number..." />
           <ErrorMessage name="userPhone" component="span" className={css.error} />
         </div>
         <button className={css.add} type="submit">
@@ -52,5 +56,6 @@ export default function ContactForm({ onAdd }) {
     </Formik>
   );
 }
+
 
 

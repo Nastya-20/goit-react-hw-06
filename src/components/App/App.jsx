@@ -12,7 +12,7 @@ import { faBook } from '@fortawesome/free-solid-svg-icons';
 import initialContacts from '../../contacts.json';
 import css from './App.module.css';
 
-export default function App() {
+const App = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
   const filter = useSelector(selectNameFilter);
@@ -66,10 +66,12 @@ export default function App() {
           <SearchBox value={filter} onSearch={handleChangeFilter} />
         </div>
         <ContactList contacts={visibleContacts} onDelete={handleDeleteContact} />
-       </div>
+      </div>
     </PersistGate>
   );
-}
+};
+
+export default App;
 
 
 
