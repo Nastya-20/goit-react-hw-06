@@ -7,6 +7,7 @@ import { faUser, faPhone } from '@fortawesome/free-solid-svg-icons';
 
 export default function Contact({ id, name, number }) {
   const dispatch = useDispatch();  
+  
   const handleDelete = () => {
     dispatch(deleteContact(id)); 
   };

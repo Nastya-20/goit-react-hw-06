@@ -1,16 +1,17 @@
 .list {
+    width: 1000px;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
     align-content: flex-start;
-    gap: 15px;
+    gap: 10px;
 }
 
 .item {
     max-width: 300px;
     min-width: 260px;
     height: auto;
-    flex: 1 1 calc(33.333% - 5px);
+    flex: 1 1 calc(33.333% - 10px);
     box-shadow: 0 8px 15px #2e4857;
     margin: 0;
     box-sizing: border-box;
